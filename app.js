@@ -1,4 +1,5 @@
 import { Timer } from "./scripts/managers/time-manager.js";
+import { Interface } from "./scripts/managers/interface-manager.js";
 
 class Application{
     constructor(entryFile){
