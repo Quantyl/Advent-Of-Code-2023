@@ -1,8 +1,8 @@
-import prompt from "prompt-sync";
+import promptSync from "prompt-sync";
+const prompt = promptSync();
 
 export const Interface = {
-    RESET : "\x1b[0m",
-
+    STYLE_RESET : "\x1b[0m",
     STYLE_BOLD : "\x1b[01m",
     STYLE_ITALIC : "\x1b[02m",
 
@@ -11,9 +11,10 @@ export const Interface = {
     COLOR_GREEN : "\x1b[32m",
     COLOR_YELLOW : "\x1b[33m",
     COLOR_BLUE : "\x1b[34m",
+    COLOR_MAGENTA : "\x1b[35m",
 
     input : function(message, verify = () => true){
-        message += this.RESET;
+        message += this.STYLE_RESET;
 
         let input = prompt(message);
         while(!verify(message)){
@@ -22,8 +23,8 @@ export const Interface = {
         return input;
     },
 
-    output : function(){
-        console.log(...arguments + this.RESET);
+    output : function(message){
+        console.log(message + this.STYLE_RESET);
     }
 };
 

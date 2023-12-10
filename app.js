@@ -1,5 +1,5 @@
 import { Timer } from "./scripts/managers/time-manager.js";
-import { Interface } from "./scripts/managers/interface-manager.js";
+import { Terminal } from "./scripts/managers/teminal-manager.js";
 
 class Application{
     constructor(entryFile){
@@ -27,6 +27,8 @@ class Application{
     #enter(entryFile){
         this.#timer = new Timer();
         this.#entryFile = entryFile;
+
+        new Terminal();
 
         console.log("Started application from", entryFile);
     }
