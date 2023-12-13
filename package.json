@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "performance": "^1.4.0",
+    "promises": "^0.2.5",
     "prompt-sync": "^4.2.0"
   }
 }
