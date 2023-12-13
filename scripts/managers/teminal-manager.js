@@ -1,5 +1,5 @@
 import { Interface } from "./interface-manager.js";
-import { Command, initDay } from "./commands.js";
+import { initDay, runDay } from "./commands.js";
 
 export class Terminal{
     #TREE =[
@@ -38,7 +38,8 @@ export class Terminal{
         
     #COMMANDS = {
         "help" : this.#help,
-        "init-day" : initDay
+        "init-day" : initDay,
+        "exec-day" : runDay,
     }
 
     #help(){

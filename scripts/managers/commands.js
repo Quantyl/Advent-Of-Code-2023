@@ -20,3 +20,20 @@ export async function initDay(args){
         return [0, "Failure when creating day folder."];
     }
 }
+
+export async function runDay(args){
+    const DAY_INDEX = args[0];
+    if(DAY_INDEX == undefined || !DAY_INDEX.test(/\^d+$/)){
+        return [0, "Day Index is not a number."];
+    }
+
+    try{
+        const FILE_CONTENT = fs.readFile(`../days/day-${DAY_INDEX}`, "utf-8");
+        eval(FILE_CONTENT);
+
+        return [1, `Successfully ran day-${DAY_INDEX}`];
+    }
+    catch(err){
+        return [0, err];
+    }
+}
