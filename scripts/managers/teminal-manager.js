@@ -1,16 +1,5 @@
-import Interface from "./interface-manager.js";
-
-export class Command{
-    static FAILURE_CODE = 0;
-    static SUCCESS_CODE = 1;
-
-    constructor(execMessage, cmndPrefix){
-        this.execMessage = execMessage;
-        this.cmndPrefix = cmndPrefix;
-    }
-
-    execute() { return [Command.FAILURE_CODE, "Execution method not implemented"]; }
-}
+import { Interface } from "./interface-manager.js";
+import { Command, initDay } from "./commands.js";
 
 export class Terminal{
     #TREE =[
@@ -46,8 +35,23 @@ export class Terminal{
         Interface.STYLE_RESET + Interface.COLOR_BLACK,
         Interface.STYLE_RESET + Interface.COLOR_BLACK,
     ];
+        
+    #COMMANDS = {
+        "help" : this.#help,
+        "init-day" : initDay
+    }
 
-    #LINE_STARTER = "Advent-of-Code>";
+    #help(){
+        let output = "";
+        output += "Helper functions: \n";
+
+        const COMMANDS = Object.values(this.#COMMANDS);
+        for(let i = 1; i < COMMANDS.length; i++){
+            output += ` - ${COMMANDS[i]}\n`;
+        }
+
+        return [1, output];
+    }
 
 
     constructor(){
@@ -80,21 +84,22 @@ export class Terminal{
         Interface.output(tree);
     }
 
-    #update(){
+    async #update(){
         let run = true;
 
         while(run){
-            Interface.input(LINE_STARTER);
-            /* To-do : Add commands: 
-                -init-day __index__
-                -read-day __index__ (returns time to run, completed-status, etc. from day__index__.json)
-                -run-day __index__ (runs day, and if no errors, return time taken, etc.)
-                -set-day __index__ (set the info for day__index__.json)
-            */
+            const INPUT = Interface.input("Advent-of-Code>").split(" ");
+            const COMMAND = this.#COMMANDS[INPUT[0]];
+
+            if(COMMAND === undefined){
+                Interface.output("ERROR: No such command, ", COMMAND[0]);
+                continue;
+            }
+
+            const RESULT = await COMMAND(INPUT.splice(0, 1))
+            const PREFIX = RESULT[0] ? "ERROR" : "";
+
+            Interface.output(`${PREFIX}: ${RESULT[1]}`);
         }
-    }
-
-    logError(error, message){
-
     }
 }
