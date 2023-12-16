@@ -13,6 +13,10 @@ class Application{
     get entryFile() { return this.#entryFile };
     get runTime() { return this.#timer.getTime() };
 
+    forceExit(){
+        process.exit(0);
+    }
+
     #exit(code){
         const EXIT_CODES = {
             0 : "with no errors",
@@ -28,9 +32,9 @@ class Application{
         this.#timer = new Timer();
         this.#entryFile = entryFile;
 
-        new Terminal();
-
         console.log("Started application from", entryFile);
+
+        new Terminal(this);
     }
 }
 

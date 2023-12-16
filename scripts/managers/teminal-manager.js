@@ -35,54 +35,63 @@ export class Terminal{
         Interface.STYLE_RESET + Interface.COLOR_BLACK,
         Interface.STYLE_RESET + Interface.COLOR_BLACK,
     ];
-        
+    
     #COMMANDS = {
-        "help" : this.#help,
+        "help" : function () {
+            return [1, Object.keys(this.#COMMANDS).reduce((res, val) => {
+                return res += ` - ${val}\n`;
+    
+            }, "Functions: \n")];
+        }.bind(this),
+
+        "exit" : function(){
+            this.app.forceExit();
+        }.bind(this),
+
+        "jump" : function(){
+            const JUMP_LEN = 20;
+
+            let output = "";
+            for(let i = 0; i < JUMP_LEN; i++){
+                output += "\n";
+            }
+
+            return [1, output];
+        }.bind(this),
+
         "init-day" : initDay,
         "exec-day" : runDay,
     }
 
-    #help(){
-        let output = "";
-        output += "Helper functions: \n";
 
-        const COMMANDS = Object.values(this.#COMMANDS);
-        for(let i = 1; i < COMMANDS.length; i++){
-            output += ` - ${COMMANDS[i]}\n`;
-        }
-
-        return [1, output];
-    }
-
-
-    constructor(){
+    constructor(app){
+        this.app = app;
         this.#enter();
         this.#update();
     }
 
     #enter(){
-        function generateTree(){
-            return this.#TREE.reduce((res, val, index) => {
-                let padding = "".padStart(4 - ((val.length - 1) / 2));
-                let row = val.reduce((res, val) => {
-                    return res += this.#TREE_COLORS[val] + this.#TREE_CHARS[val];
-                }, padding);
+        Interface.output(this.getTree());
+    }
 
-                switch(index){
-                    case 2:
-                        row += `          ${Interface.STYLE_BOLD}${Interface.COLOR_YELLOW}-Advent of Code-`;
-                        break;
-                    case 3:
-                        row += `           ${Interface.STYLE_BOLD}${Interface.COLOR_BLUE}-Year 2023-`;
-                        break;
-                }
+    getTree(){
+        return this.#TREE.reduce((res, val, index) => {
+            let padding = "".padStart(4 - ((val.length - 1) / 2));
+            let row = val.reduce((res, val) => {
+                return res += this.#TREE_COLORS[val] + this.#TREE_CHARS[val];
+            }, padding);
 
-                return res += (row + padding + "\n");
-            }, "");
-        }
+            switch(index){
+                case 2:
+                    row += `          ${Interface.STYLE_BOLD}${Interface.COLOR_YELLOW}-Advent of Code-`;
+                    break;
+                case 3:
+                    row += `           ${Interface.STYLE_BOLD}${Interface.COLOR_BLUE}-Year 2023-`;
+                    break;
+            }
 
-        let tree = generateTree();
-        Interface.output(tree);
+            return res += (row + padding + "\n");
+        }, "");
     }
 
     async #update(){
@@ -93,14 +102,18 @@ export class Terminal{
             const COMMAND = this.#COMMANDS[INPUT[0]];
 
             if(COMMAND === undefined){
-                Interface.output("ERROR: No such command, ", COMMAND[0]);
+                if(INPUT[0] == "") {
+                    continue;
+                }
+
+                Interface.output(`${Interface.COLOR_RED}ERROR: No such command`);
                 continue;
             }
 
-            const RESULT = await COMMAND(INPUT.splice(0, 1))
-            const PREFIX = RESULT[0] ? "ERROR" : "";
+            const RESULT = await COMMAND(INPUT)
+            const PREFIX = RESULT[0] ? "" : `${Interface.COLOR_RED}ERROR: `;
 
-            Interface.output(`${PREFIX}: ${RESULT[1]}`);
+            Interface.output(`${PREFIX}${RESULT[1]}`);
         }
     }
 }
