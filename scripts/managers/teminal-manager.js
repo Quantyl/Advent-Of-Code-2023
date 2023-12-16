@@ -36,19 +36,20 @@ export class Terminal{
         Interface.STYLE_RESET + Interface.COLOR_BLACK,
     ];
     
+    #commandHistory = [];
     #COMMANDS = {
-        "help" : function () {
+        "help" : function (args) {
             return [1, Object.keys(this.#COMMANDS).reduce((res, val) => {
                 return res += ` - ${val}\n`;
     
             }, "Functions: \n")];
         }.bind(this),
 
-        "exit" : function(){
+        "exit" : function(args){
             this.app.forceExit();
         }.bind(this),
 
-        "jump" : function(){
+        "jump" : function(args){
             const JUMP_LEN = 20;
 
             let output = "";
@@ -57,6 +58,13 @@ export class Terminal{
             }
 
             return [1, output];
+        }.bind(this),
+
+        "s" : function(args){
+            const INDEX = (this.#commandHistory.length - 1) - (args.length > 0 ? (Number(args[0]) || 0) : 0);
+            const COMMAND = this.#commandHistory[INDEX];
+            return COMMAND[0](COMMAND[1]);
+            
         }.bind(this),
 
         "init-day" : initDay,
@@ -102,16 +110,14 @@ export class Terminal{
             const COMMAND = this.#COMMANDS[INPUT[0]];
 
             if(COMMAND === undefined){
-                if(INPUT[0] == "") {
-                    continue;
-                }
-
                 Interface.output(`${Interface.COLOR_RED}ERROR: No such command`);
                 continue;
             }
 
             const RESULT = await COMMAND(INPUT)
             const PREFIX = RESULT[0] ? "" : `${Interface.COLOR_RED}ERROR: `;
+
+            this.#commandHistory.push([COMMAND, INPUT]);
 
             Interface.output(`${PREFIX}${RESULT[1]}`);
         }
