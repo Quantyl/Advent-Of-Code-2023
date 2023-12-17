@@ -25,7 +25,7 @@ class Application{
         };
 
         let exitStatus = EXIT_CODES[code] || ("with exit-code", code);
-        console.log(`Exited application ${exitStatus} after ${this.runTime}ms`);
+        console.log(`Exited application ${exitStatus} after ${this.runTime / 1000}sec`);
     }
 
     #enter(entryFile){
