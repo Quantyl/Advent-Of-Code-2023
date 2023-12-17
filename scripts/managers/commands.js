@@ -11,9 +11,8 @@ export async function initDay(args){
     try{
         const TOP_PATH = `${TOP_DIR_PATH}/scripts/days/day-${DAY_INDEX}`;
         await FileManager.createDir(TOP_PATH);
-        await FileManager.createFile(`${TOP_PATH}/part-1.js`, `import { } from "./day.js";`);
-        await FileManager.createFile(`${TOP_PATH}/part-2.js`, `import { } from "./day.js";`);
-        await FileManager.createFile(`${TOP_PATH}/day.js`, `import { FileManager } from "../managers/file-manager.js";\n\nexport const INPUT = await FileManager.readFile("${TOP_PATH}/input.txt");`);
+        await FileManager.createFile(`${TOP_PATH}/part-1.js`, `const CONTENT = await FileManager.readFile("/Programming/JavaScript/Advent-of-Code-2023/scripts/days/day-${DAY_INDEX}/input.txt");`);
+        await FileManager.createFile(`${TOP_PATH}/part-2.js`, `const CONTENT = await FileManager.readFile("/Programming/JavaScript/Advent-of-Code-2023/scripts/days/day-${DAY_INDEX}/input.txt");`);
         await FileManager.createFile(`${TOP_PATH}/input.txt`, `Input file of ${TOP_PATH}`);
 
         return [1, `Successfully created folder ${TOP_PATH}`];
@@ -37,7 +36,7 @@ export async function runDay(args){
 
     try{
         const FILE_CONTENT = await FileManager.readFile(`${TOP_DIR_PATH}/scripts/days/day-${DAY_INDEX}/part-${PART_INDEX}.js`, "utf-8");
-        eval(FILE_CONTENT);
+        await eval(`(async function() { ${FILE_CONTENT} })();`);
 
         return [1, `Successfully ran day ${DAY_INDEX}, part ${PART_INDEX}`];
     }
