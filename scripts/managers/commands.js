@@ -14,7 +14,7 @@ export async function initDay(args){
         await FileManager.createFile(`${TOP_PATH}/part-1.js`, `//Part 1 file of ${TOP_PATH}`);
         await FileManager.createFile(`${TOP_PATH}/part-2.js`, `//Part 2 file of ${TOP_PATH}`);
         await FileManager.createFile(`${TOP_PATH}/day.js`, `//File for general methods of ${TOP_PATH}`);
-        await FileManager.createFile(`${TOP_PATH}/input.js`, `Input file of ${TOP_PATH}`);
+        await FileManager.createFile(`${TOP_PATH}/input.txt`, `Input file of ${TOP_PATH}`);
 
         return [1, `Successfully created folder ${TOP_PATH}`];
         
