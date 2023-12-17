@@ -13,7 +13,7 @@ export async function initDay(args){
         await FileManager.createDir(TOP_PATH);
         await FileManager.createFile(`${TOP_PATH}/part-1.js`, `import { } from "./day.js";`);
         await FileManager.createFile(`${TOP_PATH}/part-2.js`, `import { } from "./day.js";`);
-        await FileManager.createFile(`${TOP_PATH}/day.js`, `import { FileManager } from "../managers/file-manager.js";\nexport const INPUT = await FileManager.readFile("${TOP_PATH}/input.txt");`);
+        await FileManager.createFile(`${TOP_PATH}/day.js`, `import { FileManager } from "../managers/file-manager.js";\n\nexport const INPUT = await FileManager.readFile("${TOP_PATH}/input.txt");`);
         await FileManager.createFile(`${TOP_PATH}/input.txt`, `Input file of ${TOP_PATH}`);
 
         return [1, `Successfully created folder ${TOP_PATH}`];

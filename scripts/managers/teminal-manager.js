@@ -35,8 +35,7 @@ export class Terminal{
         Interface.STYLE_RESET + Interface.COLOR_BLACK,
         Interface.STYLE_RESET + Interface.COLOR_BLACK,
     ];
-    
-    #commandHistory = [];
+
     #COMMANDS = {
         "help" : function (args) {
             return [1, Object.keys(this.#COMMANDS).reduce((res, val) => {
@@ -60,15 +59,8 @@ export class Terminal{
             return [1, output];
         }.bind(this),
 
-        "s" : function(args){
-            const INDEX = (this.#commandHistory.length - 1) - (args.length > 0 ? (Number(args[0]) || 0) : 0);
-            const COMMAND = this.#commandHistory[INDEX];
-            return COMMAND[0](COMMAND[1]);
-            
-        }.bind(this),
-
-        "init-day" : initDay,
-        "exec-day" : runDay,
+        "init" : initDay,
+        "exec" : runDay,
     }
 
 
@@ -116,8 +108,6 @@ export class Terminal{
 
             const RESULT = await COMMAND(INPUT)
             const PREFIX = RESULT[0] ? "" : `${Interface.COLOR_RED}ERROR: `;
-
-            this.#commandHistory.push([COMMAND, INPUT]);
 
             Interface.output(`${PREFIX}${RESULT[1]}`);
         }
