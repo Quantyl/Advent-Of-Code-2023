@@ -11,8 +11,8 @@ export async function initDay(args){
     try{
         const TOP_PATH = `${TOP_DIR_PATH}/scripts/days/day-${DAY_INDEX}`;
         await FileManager.createDir(TOP_PATH);
-        await FileManager.createFile(`${TOP_PATH}/part-1.js`, `//Part 1 file of ${TOP_PATH}`);
-        await FileManager.createFile(`${TOP_PATH}/part-2.js`, `//Part 2 file of ${TOP_PATH}`);
+        await FileManager.createFile(`${TOP_PATH}/part-1.js`, `import { } from "./day.js"`);
+        await FileManager.createFile(`${TOP_PATH}/part-2.js`, `import { } from "./day.js"`);
         await FileManager.createFile(`${TOP_PATH}/day.js`, `//File for general methods of ${TOP_PATH}`);
         await FileManager.createFile(`${TOP_PATH}/input.txt`, `Input file of ${TOP_PATH}`);
 
